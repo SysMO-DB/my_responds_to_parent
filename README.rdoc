@@ -1,0 +1,50 @@
+= my_responds_to_parent Gem
+This is the Gem version of responds_to_parent Plugin
+
+More information about the Plugin please see below, or at https://github.com/markcatley/responds_to_parent
+
+== Install
+Put this line into Gemfile:
+  gem "my_responds_to_parent", :git => "git://github.com/quyen/my_responds_to_parent.git"
+
+
+= responds_to_parent Plugin
+
+Adds responds_to_parent to your controller to respond to the parent document of your page.
+Make Ajaxy file uploads by posting the form to a hidden iframe, and respond with
+RJS to the parent window.
+
+== Example
+
+Controller:
+ 
+  class Test < ActionController::Base
+    def main
+    end
+ 
+    def form_action
+      # Do stuff with params[:uploaded_file]
+        
+      responds_to_parent do
+        render :update do |page|
+          page << "alert($('stuff').innerHTML)"
+        end
+      end
+    end
+  end
+ 
+main.rhtml:
+ 
+  <html>
+    <body>
+      <div id="stuff">Here is some stuff</div>
+ 
+      <form target="frame" action="form_action">
+        <input type="file" name="uploaded_file"/>
+        <input type="submit"/>
+      </form>
+ 
+      <iframe id='frame' name="frame"></iframe>
+    </body>
+  </html>
+  
